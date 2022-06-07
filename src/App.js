@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import CardList from './components/CardList/CardList';
 
 import logo from './logo.svg';
 import './App.css';
@@ -15,21 +16,16 @@ class App extends Component {
       monsters: [],
       searchField: ''
     };
-    console.log('constructor');
   }
 
   // Runs right after the UI component mounts with the render method. This happens third.
   componentDidMount() {
-    console.log('component did mount')
     fetch('https://jsonplaceholder.typicode.com/users')
       .then((response) => response.json())
       .then((users) => 
         this.setState(
           () => {
             return {monsters: users}
-      },
-      () => {
-        console.log(this.state);
       }
     )
     );
@@ -44,7 +40,6 @@ class App extends Component {
 
   // The render runs second and it determines what to show on the browser. Renders/ mounts the initial UI.
   render() {
-    console.log('render');
 
     const { monsters, searchField } = this.state;
     const { onSearchChange } = this;
@@ -61,13 +56,10 @@ class App extends Component {
           placeholder='search monsters' 
           onChange={onSearchChange}
         />
-        {
-          filteredMonsters.map((monster) => {
-            return <div key={monster.id}>
-              <h1>{monster.name}</h1>
-            </div>
-          })
-        }
+        
+
+        
+        <CardList monsters={filteredMonsters} />
       </div>
     );
   }

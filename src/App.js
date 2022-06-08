@@ -3,6 +3,7 @@ import CardList from './components/CardList/CardList';
 
 import logo from './logo.svg';
 import './App.css';
+import SearchBar from './components/SearchBar/SearchBar';
 
 class App extends Component {
 
@@ -50,16 +51,15 @@ class App extends Component {
 
     return (
       <div className="App">
-        <input 
-          className='search-box' 
-          type="search" 
+        
+        <SearchBar 
+          onChangeHandler={onSearchChange} 
           placeholder='search monsters' 
-          onChange={onSearchChange}
+          className='search-box' 
         />
         
-
-        
         <CardList monsters={filteredMonsters} />
+
       </div>
     );
   }

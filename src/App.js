@@ -1,56 +1,39 @@
-import { Component } from 'react';
 import CardList from './components/CardList/CardList';
+import { useEffect, useState } from 'react';
 
-import logo from './logo.svg';
 import './App.css';
 import SearchBar from './components/SearchBar/SearchBar';
 
-class App extends Component {
 
-  // Classes always run the constructor class first. The only thing you'll do with the constructor 
-  // is initialize the state.
 
-  constructor() {
-    super();
+const App = () => {
 
-    this.state = {
-      monsters: [],
-      searchField: ''
-    };
-  }
+  const [searchField, setSearchField] = useState('');
+  const [monsters, setMonsters] = useState([]);
+  const [filteredMonsters, setFilteredMonsters] = useState(monsters);
 
-  // Runs right after the UI component mounts with the render method. This happens third.
-  componentDidMount() {
+
+  useEffect(() => {
     fetch('https://jsonplaceholder.typicode.com/users')
       .then((response) => response.json())
-      .then((users) => 
-        this.setState(
-          () => {
-            return {monsters: users}
-      }
-    )
-    );
-  }
+      .then((users) => setMonsters(users))
+  }, []);
 
-  onSearchChange = (event) => {
-    const searchField = event.target.value.toLocaleLowerCase(); 
-    this.setState(() => {
-      return { searchField }
-    })
-  }
-
-  // The render runs second and it determines what to show on the browser. Renders/ mounts the initial UI.
-  render() {
-
-    const { monsters, searchField } = this.state;
-    const { onSearchChange } = this;
-
-    const filteredMonsters = monsters.filter((monster) => {
+  useEffect(() => {
+    const newFilteredMonsters = monsters.filter((monster) => {
       return monster.name.toLocaleLowerCase().includes(searchField);
     });
 
-    return (
-      <div className="App">
+    setFilteredMonsters(newFilteredMonsters);
+  }, [monsters, searchField])
+
+  const onSearchChange = (event) => {
+        const searchFieldString = event.target.value.toLocaleLowerCase(); 
+        setSearchField(searchFieldString);
+      }
+
+  return (
+    <div className="App">
 
         <h1 className='app-title'>Monsters Rolodex</h1>
         
@@ -59,12 +42,11 @@ class App extends Component {
           placeholder='search monsters' 
           className='monsters search-box' 
         />
-        
+
         <CardList monsters={filteredMonsters} />
 
-      </div>
-    );
-  }
+    </div>
+  )
 }
 
 export default App;

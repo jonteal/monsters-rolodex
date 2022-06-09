@@ -14,6 +14,7 @@ const App = () => {
 
 
   useEffect(() => {
+    console.log(monsters);
     fetch('https://jsonplaceholder.typicode.com/users')
       .then((response) => response.json())
       .then((users) => setMonsters(users))
